@@ -15,14 +15,18 @@ add_executable(hello WIN32 src/PingPong.c)
 
 # Link to the actual SDL3 library.
 if (TARGET SDL3_image)
-message("@@@@@@@gay@@@@@@@@")
+    message("#### \n Debug message \n ####")
 endif()
+
 target_link_libraries(hello PRIVATE 
     SDL3::SDL3
     SDL3_image::SDL3_image
 )
 
-# target_link_libraries(MyApp PRIVATE 
-#     SDL3::SDL3 
-#     SDL3_image::SDL3_image
-# )
+add_custom_command(TARGET hello POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:hello>/images
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/images
+            $<TARGET_FILE_DIR:hello>/images
+    COMMENT "Copying images to runtime output directory"
+)
