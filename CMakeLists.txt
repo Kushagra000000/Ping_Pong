@@ -8,19 +8,19 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/$<CONFIGURATION>")
 
 # This assumes the SDL source is available in vendored/SDL
 add_subdirectory(vendor/SDL EXCLUDE_FROM_ALL)
-add_subdirectory(vendor/SDL_image EXCLUDE_FROM_ALL)
+# add_subdirectory(vendor/SDL_image EXCLUDE_FROM_ALL)       // Not required
 
 # Create your game executable target as usual
 add_executable(pong WIN32 src/PingPong.c)
 
-# Link to the actual SDL3 library.
-if (TARGET SDL3_image)
-    message("#### \n Debug message \n ####")
-endif()
+# Link to the actual SDL3 library.                          // Not required
+# if (TARGET SDL3_image)
+#     message("#### \n Debug message \n ####")
+# endif()
 
 target_link_libraries(pong PRIVATE 
     SDL3::SDL3
-    SDL3_image::SDL3_image
+    # SDL3_image::SDL3_image
 )
 
 add_custom_command(TARGET pong POST_BUILD
