@@ -28,7 +28,6 @@ typedef struct {
     int dir;
     int y;
     int player_length;  // length of the player's racket
-    int player_width;   // width of the player's racket        // both will depend on resolution of the screen;
 } Player;
 
 typedef struct {
@@ -112,13 +111,13 @@ int update(void * appstate) {
 
     // Right paddle
     if (state->ball.x + BALL_DIMENTIONS > state->screen.screenWidth - PLAYER_X
-        && state->ball.x < state->screen.screenWidth - PLAYER_X + state->player2.player_width
+        && state->ball.x < state->screen.screenWidth - PLAYER_X + PLAYER_WIDTH
         && state->ball.y + BALL_DIMENTIONS > state->player2.y
         && state->ball.y < state->player2.y + state->player2.player_length)
             state->ball.x_vel = 0; // bounce back left
 
     // Left paddle
-    if (state->ball.x < PLAYER_X + state->player1.player_width
+    if (state->ball.x < PLAYER_X + PLAYER_WIDTH
         && state->ball.x + BALL_DIMENTIONS > PLAYER_X
         && state->ball.y + BALL_DIMENTIONS > state->player1.y
         && state->ball.y < state->player1.y + state->player1.player_length)
@@ -199,7 +198,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char* argv[]) {
     SDL_SetRenderVSync(state->renderer, true);
 
     // Initialize Spirit and Change colour_key
-    state->surface = SDL_LoadBMP("../images/ball.bmp");
+    state->surface = SDL_LoadBMP("./images/ball.bmp");
     // state->surface = SDL_LoadBMP("../images/Garou.bmp");
     if (!state->surface) {
         SDL_Log("Surface creation unsucessfull: %s\n", SDL_GetError());
@@ -235,6 +234,11 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char* argv[]) {
     // state->ball.y_vel = 30 * SDL_randf() + 30;  // let's see if this is enough, or too much, and then change...
     state->ball.x_vel = (SDL_randf() > 0.5f);
     state->ball.y_vel = (SDL_randf() > 0.5f);
+
+    SDL_Log("### \n stats \n ###");
+    SDL_Log("Screen Height %d", state->screen.screenHeight);
+    SDL_Log("Screen Width %d", state->screen.screenWidth);
+    SDL_Log("Player Length %d", state->player1.player_length);
 
 
     *appstate = state;
